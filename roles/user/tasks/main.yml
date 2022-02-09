@@ -1,0 +1,34 @@
+---
+- name: create user, group, dir
+  block:
+    - name: create group
+      group:
+        name: "{{ user.group }}"
+
+    - name: create user
+      user:
+        name: "{{ user.login }}"
+        password: "{{ user.password | password_hash('sha512')  }}"
+        shell: /bin/bash
+        group: "{{ user.group }}"
+
+    - name: create directory
+      file:
+        path={{ user.dir }}
+          mode=700
+          owner="{{ user.login }}"
+          group="{{ user.group }}"
+          state=directory
+
+    - name: copy file
+      copy:
+        src: /home/aleks/admin.txt
+        dest: "{{ user.dir }}"
+
+- name: install packages
+  package:
+    name:
+      - wget
+      - telnet
+      - nano
+    state: latest

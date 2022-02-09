@@ -1,0 +1,6 @@
+---
+user:
+  login: aleks123
+  password: 123456
+  group: admin
+  dir: /home/app/admin
